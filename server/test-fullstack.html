@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Full-Stack Snake Game Tests</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+        .pending { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <h1>Full-Stack Snake Game Test Results</h1>
+    <div id="results"></div>
+    
+    <script>
+        class FullStackTester {
+            constructor() {
+                this.results = [];
+                this.apiUrl = 'http://localhost:3000/api';
+            }
+            
+            async test(name, fn) {
+                try {
+                    await fn();
+                    this.results.push({ name, status: 'pass' });
+                } catch (error) {
+                    this.results.push({ name, status: 'fail', error: error.message });
+                }
+            }
+            
+            async testAPI() {
+                // Test backend connectivity
+                await this.test('Backend Server Connection', async () => {
+                    const response = await fetch(`${this.apiUrl}/leaderboard`);
+                    if (!response.ok) throw new Error('Server not responding');
+                });
+                
+                // Test user creation
+                await this.test('User Creation API', async () => {
+                    const response = await fetch(`${this.apiUrl}/users`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: 'TestUser', email: 'test@test.com' })
+                    });
+                    if (!response.ok) throw new Error('User creation failed');
+                });
+                
+                // Test leaderboard
+                await this.test('Leaderboard API', async () => {
+                    const response = await fetch(`${this.apiUrl}/leaderboard`);
+                    const data = await response.json();
+                    if (!Array.isArray(data)) throw new Error('Leaderboard not array');
+                });
+            }
+            
+            render() {
+                const resultsDiv = document.getElementById('results');
+                this.results.forEach(result => {
+                    const div = document.createElement('div');
+                    div.className = `test ${result.status}`;
+                    div.innerHTML = `
+                        <strong>${result.name}</strong>: ${result.status.toUpperCase()}
+                        ${result.error ? `<br>Error: ${result.error}` : ''}
+                    `;
+                    resultsDiv.appendChild(div);
+                });
+                
+                // Add instructions if backend is down
+                if (this.results.some(r => r.status === 'fail')) {
+                    const instructions = document.createElement('div');
+                    instructions.innerHTML = `
+                        <h3>To fix failing tests:</h3>
+                        <ol>
+                            <li>Start MongoDB: <code>mongod</code></li>
+                            <li>Start backend: <code>cd server && npm run dev</code></li>
+                            <li>Refresh this page</li>
+                        </ol>
+                    `;
+                    resultsDiv.appendChild(instructions);
+                }
+            }
+        }
+        
+        // Run tests
+        const tester = new FullStackTester();
+        
+        // Add pending status for backend tests
+        tester.results.push({ name: 'Testing Backend APIs...', status: 'pending' });
+        tester.render();
+        
+        // Run API tests
+        tester.testAPI().then(() => {
+            // Remove pending status
+            tester.results = tester.results.filter(r => r.status !== 'pending');
+            tester.render();
+        });
+    </script>
+</body>
+</html>

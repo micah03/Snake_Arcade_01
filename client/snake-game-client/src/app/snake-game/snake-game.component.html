@@ -1,0 +1,37 @@
+<div class="game-container">
+  <h1>🐍 Snake Game</h1>
+  
+  <div class="player-section">
+    <input *ngIf="showNameInput" [(ngModel)]="playerName" (keydown.enter)="onNameEnter()" placeholder="Enter your name and hit Enter ⏎" maxlength="15">
+    <div *ngIf="!showNameInput" class="welcome-message">{{welcomeMessage}}</div>
+  </div>
+  
+  <div class="score-board">
+    <span>Score: {{score}}</span>
+    <span>Player: {{playerName || 'Guest'}}</span>
+  </div>
+  
+  <canvas #gameCanvas width="400" height="400"></canvas>
+  
+  <div class="controls">
+    <button (click)="startGame()">Start Game</button>
+    <button (click)="pauseGame()" *ngIf="gameRunning">{{gamePaused ? 'Resume' : 'Pause'}}</button>
+    <button (click)="showLeaderboard = !showLeaderboard">Leaderboard</button>
+  </div>
+  
+  <div class="invite-section">
+    <button *ngIf="!showInviteInput" (click)="showInviteInput = true">Invite Friend</button>
+    <div *ngIf="showInviteInput">
+      <input [(ngModel)]="inviteEmail" placeholder="Invite a Friend via e-mail!" type="email" (input)="validateEmail()">
+      <button (click)="sendInvite()" [disabled]="!isValidEmail">Send Email</button>
+      <button (click)="cancelInvite()">Cancel</button>
+    </div>
+  </div>
+  
+  <div *ngIf="showLeaderboard" class="leaderboard">
+    <h3>🏆 Leaderboard</h3>
+    <div *ngFor="let user of leaderboard; let i = index" class="leaderboard-item">
+      {{i + 1}}. {{user.name}} - {{user.highScore}}
+    </div>
+  </div>
+</div>

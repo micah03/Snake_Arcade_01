@@ -13,11 +13,21 @@
             <span>Score: <span id="score">0</span></span>
             <span>High Score: <span id="highScore">0</span></span>
         </div>
+        <div class="player-section">
+            <input type="text" id="playerName" placeholder="Enter your name" maxlength="15">
+        </div>
         <canvas id="gameCanvas" width="400" height="400"></canvas>
         <div class="controls">
             <p>Use arrow keys or WASD to move</p>
             <button id="startBtn">Start Game</button>
             <button id="pauseBtn">Pause</button>
+            <button id="shareBtn">Share Game</button>
+            <button id="leaderboardBtn">Leaderboard</button>
+        </div>
+        <div id="leaderboard" class="leaderboard hidden">
+            <h3>🏆 Top Scores</h3>
+            <div id="leaderboardList"></div>
+            <button id="closeLeaderboard">Close</button>
         </div>
     </div>
     <script src="game.js"></script>

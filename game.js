@@ -162,5 +162,29 @@ class SnakeGame {
 
 // Initialize game when page loads
 window.addEventListener('load', () => {
-    new SnakeGame();
+    const game = new SnakeGame();
+    
+    // Add missing button functionality
+    const shareBtn = document.getElementById('shareBtn');
+    const leaderboardBtn = document.getElementById('leaderboardBtn');
+    
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            const gameUrl = 'https://mayukha-snake-game.surge.sh';
+            const text = `Check out this Snake game! My high score is ${game.highScore}`;
+            
+            if (navigator.share) {
+                navigator.share({ title: 'Snake Game', text, url: gameUrl });
+            } else {
+                const mailtoLink = `mailto:?subject=Play Snake Game&body=${text} - ${gameUrl}`;
+                window.open(mailtoLink);
+            }
+        });
+    }
+    
+    if (leaderboardBtn) {
+        leaderboardBtn.addEventListener('click', () => {
+            alert(`Your High Score: ${game.highScore}\n\nFor full leaderboard with friends, use the full-stack version!`);
+        });
+    }
 });

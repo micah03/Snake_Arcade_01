@@ -2,6 +2,10 @@
 node_modules/
 npm-debug.log*
 
+# Environment variables - NEVER COMMIT!
+.env
+server/.env
+
 # IDE files
 .vscode/
 .idea/

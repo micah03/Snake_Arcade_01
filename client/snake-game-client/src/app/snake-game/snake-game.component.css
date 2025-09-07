@@ -1,0 +1,75 @@
+.game-container {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: white;
+}
+
+canvas {
+  border: 3px solid #fff;
+  border-radius: 10px;
+  background: #000;
+  margin: 20px 0;
+}
+
+.score-board {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.controls button, .invite-section button {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  margin: 0 10px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.player-section input, .invite-section input {
+  padding: 10px 15px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  width: 250px;
+}
+
+.invite-section button {
+  margin: 5px;
+}
+
+.invite-section button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.player-section {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.leaderboard {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.leaderboard-item {
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.welcome-message {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #4CAF50;
+  margin: 15px 0;
+}
