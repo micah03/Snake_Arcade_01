@@ -11,7 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/snakegame', {
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/snakegame';
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
