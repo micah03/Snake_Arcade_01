@@ -1,0 +1,32 @@
+{
+  "name": "snake-arcade-game",
+  "version": "1.0.0",
+  "description": "A classic Snake arcade game built with HTML5 Canvas and JavaScript",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000 --bind localhost",
+    "serve": "npx serve .",
+    "test": "jest",
+    "test:browser": "open test-runner.html",
+    "deploy": "surge . --domain snake-arcade-game.surge.sh"
+  },
+  "keywords": [
+    "game",
+    "arcade",
+    "snake",
+    "html5",
+    "canvas",
+    "javascript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/micah03/Snake_Arcade_01.git"
+  },
+  "homepage": "https://micah03.github.io/Snake_Arcade_01/",
+  "devDependencies": {
+    "serve": "^14.0.0",
+    "jest": "^29.0.0"
+  }
+}

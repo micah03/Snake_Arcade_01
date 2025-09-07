@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake Game Tests</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Snake Game Test Results</h1>
+    <div id="results"></div>
+    
+    <script>
+        // Simple test framework
+        class TestRunner {
+            constructor() {
+                this.results = [];
+            }
+            
+            test(name, fn) {
+                try {
+                    fn();
+                    this.results.push({ name, status: 'pass' });
+                } catch (error) {
+                    this.results.push({ name, status: 'fail', error: error.message });
+                }
+            }
+            
+            expect(actual) {
+                return {
+                    toBe: (expected) => {
+                        if (actual !== expected) {
+                            throw new Error(`Expected ${expected}, got ${actual}`);
+                        }
+                    },
+                    toEqual: (expected) => {
+                        if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+                            throw new Error(`Expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+                        }
+                    }
+                };
+            }
+            
+            render() {
+                const resultsDiv = document.getElementById('results');
+                this.results.forEach(result => {
+                    const div = document.createElement('div');
+                    div.className = `test ${result.status}`;
+                    div.innerHTML = `
+                        <strong>${result.name}</strong>: ${result.status.toUpperCase()}
+                        ${result.error ? `<br>Error: ${result.error}` : ''}
+                    `;
+                    resultsDiv.appendChild(div);
+                });
+            }
+        }
+        
+        // Mock canvas for browser tests
+        const mockCanvas = {
+            getContext: () => ({
+                fillStyle: '',
+                fillRect: () => {},
+                fillText: () => {},
+                font: '',
+                textAlign: ''
+            }),
+            width: 400,
+            height: 400
+        };
+        
+        // Override getElementById for tests
+        const originalGetElementById = document.getElementById;
+        document.getElementById = (id) => {
+            if (id === 'gameCanvas') return mockCanvas;
+            return { textContent: '', addEventListener: () => {} };
+        };
+        
+        // Run tests
+        const runner = new TestRunner();
+        
+        // Load and test the game
+        fetch('game.js')
+            .then(response => response.text())
+            .then(gameCode => {
+                // Execute game code
+                eval(gameCode.replace('window.addEventListener', '// window.addEventListener'));
+                
+                runner.test('Game initializes', () => {
+                    const game = new SnakeGame();
+                    runner.expect(game.score).toBe(0);
+                    runner.expect(game.gameRunning).toBe(false);
+                });
+                
+                runner.test('Food generation', () => {
+                    const game = new SnakeGame();
+                    const food = game.generateFood();
+                    runner.expect(food.x >= 0 && food.x < 20).toBe(true);
+                    runner.expect(food.y >= 0 && food.y < 20).toBe(true);
+                });
+                
+                runner.test('Wall collision detection', () => {
+                    const game = new SnakeGame();
+                    game.snake = [{ x: -1, y: 10 }];
+                    runner.expect(game.checkGameOver()).toBe(true);
+                });
+                
+                runner.render();
+            });
+    </script>
+</body>
+</html>
