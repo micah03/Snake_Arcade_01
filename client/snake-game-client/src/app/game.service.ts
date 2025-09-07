@@ -19,7 +19,7 @@ export interface Score {
   providedIn: 'root'
 })
 export class GameService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'https://snakearcade01-production.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
 
