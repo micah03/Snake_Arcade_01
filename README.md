@@ -11,7 +11,7 @@ A classic Snake game built with HTML5 Canvas and JavaScript. Play it directly in
 
 ## 🚀 Play Online
 
-[Play the game here](https://micah03.github.io/Snake_Arcade_01/)
+[Play the game here](https://mayukha-snake-game.surge.sh)
 
 ## 🛠️ Local Development
 
